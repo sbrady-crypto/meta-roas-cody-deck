@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Meta In-Platform ROAS Dropped — Jones Road Beauty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #f6f2eb;
+  --black: #000;
+  --white: #fff;
+  --bad: #a8442e;
+  --bad-soft: #f0dcd4;
+  --good: #5e7a3f;
+  --good-soft: #dfe5d2;
+  --line: #d4ccba;
+  --muted: #6f6759;
+  --gray-bar: #1a1a1a;
+  --tan: #b8a888;
+  --tan-light: #d8cdb5;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'SF Mono', Menlo, monospace;
+  --ease: cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+body { font-family: var(--font-sans); background: var(--bg); color: var(--black); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+.slide {
+  min-height: 100vh; max-height: 100vh;
+  padding: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 5vw, 4.5rem);
+  scroll-snap-align: start;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.slide--dark { background: var(--black); color: var(--white); }
+.slide__inner { max-width: 1280px; margin: 0 auto; width: 100%; }
+
+/* SECTION TAG — prominent header replacement for tiny eyebrow */
+.section-tag {
+  display: inline-flex; align-items: center; gap: 16px;
+  padding: 10px 18px;
+  background: var(--black); color: var(--white);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 1.75rem;
+}
+.section-tag .tag-num { font-weight: 500; opacity: 0.6; }
+.section-tag .tag-name { font-weight: 500; }
+.slide--dark .section-tag { background: var(--white); color: var(--black); }
+
+h1 { font-family: var(--font-sans); font-size: clamp(2.5rem, 5.5vw, 4.5rem); font-weight: 600; line-height: 1.04; letter-spacing: -1.5px; margin-bottom: 1rem; max-width: 18ch; }
+h2 { font-family: var(--font-sans); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 600; line-height: 1.08; letter-spacing: -0.8px; margin-bottom: 1rem; max-width: 22ch; }
+h3 { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.3px; }
+
+p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-width: 60ch; }
+.lead { font-size: 1.05rem; line-height: 1.5; max-width: 56ch; font-weight: 400; }
+
+/* Title slide */
+.title-slide h1 { font-size: clamp(2.8rem, 6vw, 5.2rem); max-width: 17ch; font-weight: 500; }
+
+/* Driver grid */
+.driver-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 2rem; }
+.driver-card {
+  padding: 1.25rem 1.25rem 1.25rem; background: var(--white);
+  border-top: 4px solid var(--black);
+  display: flex; flex-direction: column; gap: 0.5rem; min-height: 210px;
+}
+.driver-card.bad { border-top-color: var(--bad); }
+.driver-card .driver-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; }
+.driver-card .driver-headline { font-family: var(--font-sans); font-weight: 500; font-size: 1.15rem; line-height: 1.2; letter-spacing: -0.3px; flex: 1; margin-top: 0.25rem; }
+.driver-card .driver-stat { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.8px; padding: 6px 10px; background: var(--bg); align-self: flex-start; }
+.driver-card.bad .driver-stat { background: var(--bad-soft); color: var(--bad); }
+.driver-card .driver-date { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.55; padding-top: 0.5rem; border-top: 1px solid var(--line); margin-top: auto; }
+
+.footnote-bar {
+  margin-top: 1.75rem; padding: 0.85rem 1.1rem; background: var(--good-soft);
+  border-left: 3px solid var(--good);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  display: inline-block;
+}
+.footnote-bar.bad { background: var(--bad-soft); border-left-color: var(--bad); color: var(--bad); }
+.footnote-bar.neutral { background: var(--white); border-left-color: var(--black); color: var(--black); }
+
+/* Chart containers */
+.chart-grid { display: grid; gap: 1rem; margin-top: 1.25rem; }
+.chart-grid.two { grid-template-columns: 1fr 1fr; }
+.chart-grid.three { grid-template-columns: repeat(3, 1fr); }
+.chart-box { background: var(--white); border: 1px solid var(--line); padding: 1rem 1.1rem; }
+.chart-box h3 { margin-bottom: 0.25rem; }
+.chart-box .chart-sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; opacity: 0.6; margin-bottom: 0.75rem; }
+.chart-canvas { position: relative; height: 220px; }
+.chart-canvas.short { height: 180px; }
+
+/* Stat strip */
+.stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin: 1.5rem 0; }
+.stat-strip.two { grid-template-columns: 1fr 1fr; max-width: 720px; }
+.stat-block { padding-top: 0.85rem; border-top: 2px solid var(--black); }
+.stat-block .stat-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; margin-bottom: 0.4rem; font-weight: 500; }
+.stat-block .stat-value { font-family: var(--font-sans); font-weight: 600; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; margin-bottom: 0.3rem; letter-spacing: -1px; }
+.stat-block .stat-value.bad { color: var(--bad); }
+.stat-block .stat-value.good { color: var(--good); }
+.stat-block .stat-compare { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; opacity: 0.65; }
+
+/* IA Comparison Cards */
+.ia-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.25rem; max-width: 900px; }
+.ia-card { padding: 1.5rem; background: var(--white); border: 1px solid var(--line); }
+.ia-card.now { border: 1px solid var(--bad); }
+.ia-card .ia-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; margin-bottom: 1rem; font-weight: 500; }
+.ia-card.now .ia-label { color: var(--bad); }
+.ia-card .ia-title { font-family: var(--font-sans); font-weight: 600; font-size: 1.4rem; margin-bottom: 1rem; letter-spacing: -0.5px; }
+.ia-list { list-style: none; padding: 0; margin: 0; }
+.ia-list li { padding: 0.55rem 0; border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+.ia-list li:last-child { border-bottom: none; }
+.ia-list .ia-mark { font-family: var(--font-mono); font-size: 12px; font-weight: 500; width: 16px; }
+.ia-list .ia-mark.yes { color: var(--good); }
+.ia-list .ia-mark.no { color: var(--bad); }
+.ia-list .ia-mark.box { color: var(--bad); }
+.ia-list li.struck { opacity: 0.4; text-decoration: line-through; }
+.ia-list li.only { background: var(--bad-soft); padding: 0.65rem 0.85rem; margin: 0.25rem -0.85rem; }
+
+/* Checkmarks */
+.checkmarks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin: 2rem 0; }
+.checkmark-card { padding: 1.5rem; background: var(--good-soft); border-left: 4px solid var(--good); }
+.checkmark-card .check { font-family: var(--font-sans); font-weight: 600; font-size: 2rem; color: var(--good); line-height: 1; margin-bottom: 0.65rem; }
+.checkmark-card h3 { font-size: 13px; margin-bottom: 0.3rem; }
+.checkmark-card .status { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--good); }
+
+/* Steps */
+.steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; margin: 1.5rem 0; }
+.step { display: grid; grid-template-columns: 48px 1fr; gap: 0.85rem; padding: 1.15rem; background: var(--white); border-left: 4px solid var(--black); align-items: start; }
+.step.priority { border-left-color: var(--bad); }
+.step .step-num { font-family: var(--font-sans); font-weight: 600; font-size: 1.8rem; line-height: 1; letter-spacing: -1px; }
+.step.priority .step-num { color: var(--bad); }
+.step h3 { font-family: var(--font-sans); font-weight: 600; font-size: 0.95rem; text-transform: none; letter-spacing: -0.2px; line-height: 1.25; margin-bottom: 0.35rem; }
+.step p { font-size: 0.82rem; line-height: 1.45; max-width: 100%; }
+
+/* Closing */
+.closing-statement { font-family: var(--font-sans); font-weight: 500; font-size: clamp(2rem, 4.5vw, 3.6rem); line-height: 1.1; max-width: 22ch; letter-spacing: -1.2px; }
+.closing-statement em { font-style: italic; font-weight: 500; color: var(--good); }
+
+/* Progress + Nav */
+.progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--black); width: 0%; z-index: 100; transition: width 0.25s ease; }
+.slide--dark ~ .progress { background: var(--white); }
+.slide-counter { position: fixed; bottom: 1rem; left: 1.25rem; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; opacity: 0.45; z-index: 10; }
+.slide-counter.invert { color: var(--white); }
+.nav-hint { position: fixed; bottom: 1rem; right: 1.25rem; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; opacity: 0.45; z-index: 10; }
+.nav-hint.invert { color: var(--white); }
+
+.reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.reveal:nth-child(2) { transition-delay: 0.07s; }
+.reveal:nth-child(3) { transition-delay: 0.14s; }
+.reveal:nth-child(4) { transition-delay: 0.21s; }
+.reveal:nth-child(5) { transition-delay: 0.28s; }
+
+@media (max-width: 900px) {
+  .driver-grid, .stat-strip, .stat-strip.two, .chart-grid.two, .chart-grid.three, .checkmarks, .steps, .ia-compare { grid-template-columns: 1fr; }
+  .nav-hint { display: none; }
+  .slide { max-height: none; min-height: auto; padding: 2.5rem 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { .reveal { transition: opacity 0.15s ease; transform: none; } }
+</style>
+</head>
+<body>
+<div class="progress"></div>
+
+<!-- 01 TITLE -->
+<section class="slide slide--dark title-slide">
+  <div class="slide__inner">
+    <p class="reveal" style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.7;">Paid Social · Diagnostic · May 2026</p>
+    <h1 class="reveal">Why Meta in-platform ROAS dropped.</h1>
+    <p class="lead reveal" style="opacity: 0.85;">Four overlapping changes hit our account between March 3rd and March 26th. Here's what each one did — and how much of the decline is real vs. measurement.</p>
+    <p class="reveal" style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2.5rem; opacity: 0.55;">For Cody · Prepared by Growth</p>
+  </div>
+</section>
+
+<!-- 02 FOUR DRIVERS -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">Overview</span><span class="tag-name">The four drivers</span></div>
+    <h2 class="reveal">Four overlapping changes. Not one cause.</h2>
+
+    <div class="driver-grid reveal">
+      <div class="driver-card bad">
+        <div class="driver-num">01 · Our change</div>
+        <div class="driver-headline">Lowered the free shipping threshold.</div>
+        <div class="driver-stat">First-time AOV ▼ 15.7%</div>
+        <div class="driver-date">Mar 3</div>
+      </div>
+      <div class="driver-card bad">
+        <div class="driver-num">02 · Platform</div>
+        <div class="driver-headline">Meta broke engaged-view out of click attribution.</div>
+        <div class="driver-stat">Click purchases ▼ 23.5%</div>
+        <div class="driver-date">Mar 26</div>
+      </div>
+      <div class="driver-card bad">
+        <div class="driver-num">03 · Our change</div>
+        <div class="driver-headline">Overcorrected from VO to CO.</div>
+        <div class="driver-stat">VO spend ▼ 21% · Lower-ROAS bucket</div>
+        <div class="driver-date">Ongoing</div>
+      </div>
+      <div class="driver-card bad">
+        <div class="driver-num">04 · Our change</div>
+        <div class="driver-headline">Adopted Incremental Attribution.</div>
+        <div class="driver-stat">Lost optimization windows</div>
+        <div class="driver-date">Late Mar</div>
+      </div>
+    </div>
+
+    <div class="footnote-bar reveal" style="margin-top: 2rem;">✓ Pixel, conversion API, and catalog — all clean. Not a tracking issue.</div>
+  </div>
+</section>
+
+<!-- 03 DRIVER 1 — FREE SHIPPING -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">01</span><span class="tag-name">Free Shipping Threshold · Mar 3</span></div>
+    <h2 class="reveal">First-time AOV dropped 3× harder than returning.</h2>
+
+    <div class="chart-grid two reveal">
+      <div class="chart-box">
+        <h3>Average Order Value</h3>
+        <div class="chart-sub">First-time vs. returning · before vs. after Mar 3</div>
+        <div class="chart-canvas"><canvas id="aovChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Orders vs. Revenue · % change</h3>
+        <div class="chart-sub">First-time revenue fell on AOV, not orders</div>
+        <div class="chart-canvas"><canvas id="ordersRev"></canvas></div>
+      </div>
+    </div>
+
+    <div class="footnote-bar bad reveal">Meta's CO optimization compounds this — CO finds the lower-AOV buyers most affected by the new threshold</div>
+  </div>
+</section>
+
+<!-- 04 DRIVER 2 — CLICK ATTRIBUTION -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">02</span><span class="tag-name">Click Attribution Change · Mar 26</span></div>
+    <h2 class="reveal">Same demand. Different attribution windows.</h2>
+
+    <div class="chart-grid two reveal">
+      <div class="chart-box">
+        <h3>Purchases by attribution window</h3>
+        <div class="chart-sub">Click ▼ · View + Engaged-View ▲</div>
+        <div class="chart-canvas"><canvas id="attribPurch"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Revenue by attribution window</h3>
+        <div class="chart-sub">$1.12M of click revenue moved to view/EV</div>
+        <div class="chart-canvas"><canvas id="attribRev"></canvas></div>
+      </div>
+    </div>
+
+    <div class="footnote-bar bad reveal">We optimize off click — algorithm now trains on ~24% fewer events. Dashboard understates true performance by 10–15 ROAS points.</div>
+  </div>
+</section>
+
+<!-- 05 DRIVER 2 — THE MECHANISM -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">02</span><span class="tag-name">The Mechanism · Placement Shift</span></div>
+    <h2 class="reveal">Reach exploded. Conversions didn't.</h2>
+
+    <div class="chart-grid two reveal">
+      <div class="chart-box">
+        <h3>Spend by placement</h3>
+        <div class="chart-sub">Audience Network share barely changed</div>
+        <div class="chart-canvas"><canvas id="spendStack"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Impressions by placement</h3>
+        <div class="chart-sub">Audience Network exploded from 0.6% to 21%</div>
+        <div class="chart-canvas"><canvas id="impStack"></canvas></div>
+      </div>
+    </div>
+
+    <div class="stat-strip reveal" style="margin-top: 1.5rem;">
+      <div class="stat-block">
+        <div class="stat-label">AN Spend</div>
+        <div class="stat-value">$40K</div>
+        <div class="stat-compare">1.0% of account · up from 0.4%</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">AN Impressions</div>
+        <div class="stat-value bad">46.8M</div>
+        <div class="stat-compare">21% of account · up from 0.6%</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Share of impression growth</div>
+        <div class="stat-value bad">58%</div>
+        <div class="stat-compare">of all new impressions came from AN</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 DRIVER 3 — VO → CO -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">03</span><span class="tag-name">VO → CO Overcorrection</span></div>
+    <h2 class="reveal">We pulled $194K from the higher-ROAS structure.</h2>
+
+    <div class="chart-grid three reveal">
+      <div class="chart-box">
+        <h3>Spend mix · Before</h3>
+        <div class="chart-sub">CO 74.5% · VO 25.5%</div>
+        <div class="chart-canvas short"><canvas id="mixBefore"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Spend mix · After</h3>
+        <div class="chart-sub">CO 80.5% · VO 19.5%</div>
+        <div class="chart-canvas short"><canvas id="mixAfter"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>ROAS · VO vs CO</h3>
+        <div class="chart-sub">VO still posts 2× CO's ROAS</div>
+        <div class="chart-canvas short"><canvas id="voCoRoas"></canvas></div>
+      </div>
+    </div>
+
+    <div class="stat-strip two reveal" style="margin-top: 1.25rem;">
+      <div class="stat-block">
+        <div class="stat-label">Spend change</div>
+        <div class="stat-value bad">+$316K to CO · −$194K from VO</div>
+        <div class="stat-compare">6 share points moved CO · classified by actual Performance goal</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">VO continues to lead</div>
+        <div class="stat-value good">1.53 vs. 0.71</div>
+        <div class="stat-compare">After-period ROAS · VO vs CO</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 DRIVER 4 — IA -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">04</span><span class="tag-name">Incremental Attribution · Late March</span></div>
+    <h2 class="reveal">We can't optimize for the windows we used to.</h2>
+    <p class="lead reveal" style="max-width: 70ch;">Incremental Attribution forces Meta's proprietary window. We lost the ability to tell the algorithm which attribution model to train against.</p>
+
+    <div class="ia-compare reveal">
+      <div class="ia-card">
+        <div class="ia-label">Before · Available windows</div>
+        <div class="ia-title">5 windows to optimize for.</div>
+        <ul class="ia-list">
+          <li><span class="ia-mark yes">✓</span>1-day click</li>
+          <li><span class="ia-mark yes">✓</span>7-day click</li>
+          <li><span class="ia-mark yes">✓</span>1-day view</li>
+          <li><span class="ia-mark yes">✓</span>1-day click + 1-day view</li>
+          <li><span class="ia-mark yes">✓</span>7-day click + 1-day view</li>
+        </ul>
+      </div>
+      <div class="ia-card now">
+        <div class="ia-label">Now · With Incremental Attribution</div>
+        <div class="ia-title">1 black-box window.</div>
+        <ul class="ia-list">
+          <li class="struck"><span class="ia-mark no">✗</span>1-day click</li>
+          <li class="struck"><span class="ia-mark no">✗</span>7-day click</li>
+          <li class="struck"><span class="ia-mark no">✗</span>1-day view</li>
+          <li class="struck"><span class="ia-mark no">✗</span>1-day click + 1-day view</li>
+          <li class="struck"><span class="ia-mark no">✗</span>7-day click + 1-day view</li>
+          <li class="only"><span class="ia-mark box">■</span><strong>Incremental Attribution only</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footnote-bar bad reveal" style="margin-top: 1.25rem;">Estimated impact · 3–5 ROAS points lost · less signal + narrower training data</div>
+  </div>
+</section>
+
+<!-- 08 RULED OUT -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">Diagnostic</span><span class="tag-name">What we ruled out</span></div>
+    <h2 class="reveal">This isn't a tracking issue.</h2>
+
+    <div class="checkmarks reveal">
+      <div class="checkmark-card">
+        <div class="check">✓</div>
+        <h3>Pixel audit</h3>
+        <div class="status">Clean</div>
+      </div>
+      <div class="checkmark-card">
+        <div class="check">✓</div>
+        <h3>Conversion API</h3>
+        <div class="status">Firing correctly</div>
+      </div>
+      <div class="checkmark-card">
+        <div class="check">✓</div>
+        <h3>Product catalog</h3>
+        <div class="status">Intact</div>
+      </div>
+    </div>
+
+    <div class="chart-box reveal" style="margin-top: 0.5rem;">
+      <h3>Where the −26 ROAS points actually came from</h3>
+      <div class="chart-sub">Best-estimate decomposition · directional</div>
+      <div class="chart-canvas"><canvas id="decompChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 NEXT STEPS -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">Action</span><span class="tag-name">What we're doing about it</span></div>
+    <h2 class="reveal">Four actions.</h2>
+
+    <div class="steps reveal">
+      <div class="step priority">
+        <div class="step-num">01</div>
+        <div>
+          <h3>Exclude Audience Network — account-wide.</h3>
+          <p>Reclaim ~$40K spend. Removes 46M garbage impressions from training data. Cleanest single fix in the report.</p>
+        </div>
+      </div>
+      <div class="step priority">
+        <div class="step-num">02</div>
+        <div>
+          <h3>Switch top ASC campaigns to 7d-click + 1d-view.</h3>
+          <p>Restores algorithm signal lost to the attribution change. Start with IA Partnership, IA CostCap, Partnership Winners.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div>
+          <h3>Rebalance VO/CO mix.</h3>
+          <p>Pull spend back into VO incrementally. Target ~25% VO share (where it was pre-shift).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div>
+          <h3>Report blended + IA ROAS alongside click.</h3>
+          <p>Click ROAS in isolation overstates the decline by 10–15 points. Update weekly pacing template.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 CLOSING -->
+<section class="slide slide--dark">
+  <div class="slide__inner">
+    <p class="reveal" style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.6;">Bottom line</p>
+    <p class="closing-statement reveal">The drop is real. But it's mostly <em>measurement and mix</em> — not demand.</p>
+    <p class="lead reveal" style="margin-top: 2.5rem; opacity: 0.85;">Of the 26 reported ROAS points lost, ~16–20 are measurement reshuffle and structural overcorrection we can recover. Real residual decline is ~6–10 points — solvable with the four actions.</p>
+    <p class="reveal" style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2.5rem; opacity: 0.5;">Questions — Sam</p>
+  </div>
+</section>
+
+<div class="slide-counter" id="counter">01 / 10</div>
+<div class="nav-hint">↓ / space to navigate</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const progress = document.querySelector('.progress');
+const counter = document.getElementById('counter');
+const navHint = document.querySelector('.nav-hint');
+let current = 0;
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      const idx = Array.from(slides).indexOf(entry.target);
+      current = idx;
+      const total = slides.length;
+      counter.textContent = String(idx+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+      const isDark = entry.target.classList.contains('slide--dark');
+      counter.classList.toggle('invert', isDark);
+      navHint.classList.toggle('invert', isDark);
+      progress.style.width = ((idx+1)/total * 100) + '%';
+    }
+  });
+}, { threshold: 0.5 });
+
+slides.forEach(s => observer.observe(s));
+slides[0].classList.add('visible');
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+    e.preventDefault();
+    current = Math.min(current + 1, slides.length - 1);
+    slides[current].scrollIntoView({ behavior: 'smooth' });
+  }
+  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+    e.preventDefault();
+    current = Math.max(current - 1, 0);
+    slides[current].scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size = 10;
+Chart.defaults.color = '#000';
+Chart.defaults.borderColor = '#d4ccba';
+
+const BLACK = '#000';
+const BAD = '#a8442e';
+const GOOD = '#5e7a3f';
+const TAN = '#b8a888';
+const TAN_LIGHT = '#d8cdb5';
+const DARK_GRAY = '#3a3a3a';
+
+// SLIDE 3 — AOV
+new Chart(document.getElementById('aovChart'), {
+  type: 'bar',
+  data: {
+    labels: ['First-Time Customer', 'Returning Customer'],
+    datasets: [
+      { label: 'Before', data: [110.02, 95.97], backgroundColor: BLACK, borderWidth: 0, barThickness: 50 },
+      { label: 'After', data: [92.80, 90.56], backgroundColor: BAD, borderWidth: 0, barThickness: 50 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': $' + c.parsed.y.toFixed(2) } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
+      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + v, font: { size: 10 } }, beginAtZero: false, suggestedMin: 80 }
+    }
+  }
+});
+
+// SLIDE 3 — Orders vs Rev change
+new Chart(document.getElementById('ordersRev'), {
+  type: 'bar',
+  data: {
+    labels: ['First-Time Orders', 'First-Time Revenue', 'Returning Orders', 'Returning Revenue'],
+    datasets: [
+      { label: '% change', data: [-7, -21, 17, 11], backgroundColor: c => c.parsed && c.parsed.y < 0 ? BAD : GOOD, borderWidth: 0,
+        backgroundColor: [BAD, BAD, GOOD, GOOD] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y + '%' } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 9.5, weight: '500' }, maxRotation: 0, autoSkip: false } },
+      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => v + '%', font: { size: 10 } } }
+    }
+  }
+});
+
+// SLIDE 4 — Attribution Purchases
+new Chart(document.getElementById('attribPurch'), {
+  type: 'bar',
+  data: {
+    labels: ['1-Day Click', '1-Day View', 'Engaged-View'],
+    datasets: [
+      { label: 'Before', data: [37887, 13387, 3584], backgroundColor: BLACK, borderWidth: 0 },
+      { label: 'After', data: [28979, 18115, 7559], backgroundColor: [BAD, GOOD, GOOD], borderWidth: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10.5, weight: '500' } } },
+      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => (v/1000)+'K', font: { size: 10 } } }
+    }
+  }
+});
+
+// SLIDE 4 — Attribution Revenue
+new Chart(document.getElementById('attribRev'), {
+  type: 'bar',
+  data: {
+    labels: ['1-Day Click', '1-Day View', 'Engaged-View'],
+    datasets: [
+      { label: 'Before', data: [3765566, 1417826, 384189], backgroundColor: BLACK, borderWidth: 0 },
+      { label: 'After', data: [2646222, 1858492, 786179], backgroundColor: [BAD, GOOD, GOOD], borderWidth: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10.5, weight: '500' } } },
+      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M', font: { size: 10 } } }
+    }
+  }
+});
+
+// SLIDE 5 — Stacked spend
+new Chart(document.getElementById('spendStack'), {
+  type: 'bar',
+  data: {
+    labels: ['Before', 'After'],
+    datasets: [
+      { label: 'Facebook', data: [1691328, 1622939], backgroundColor: DARK_GRAY, stack: 's', borderWidth: 0 },
+      { label: 'Instagram', data: [1918400, 2221146], backgroundColor: TAN, stack: 's', borderWidth: 0 },
+      { label: 'Audience Network', data: [14726, 39683], backgroundColor: BAD, stack: 's', borderWidth: 0 },
+      { label: 'Other', data: [4019, 6475], backgroundColor: TAN_LIGHT, stack: 's', borderWidth: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 10, weight: '500' } } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': $' + (c.parsed.y/1000).toFixed(0) + 'K' } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
+      y: { stacked: true, grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M', font: { size: 10 } } }
+    }
+  }
+});
+
+// SLIDE 5 — Stacked impressions
+new Chart(document.getElementById('impStack'), {
+  type: 'bar',
+  data: {
+    labels: ['Before', 'After'],
+    datasets: [
+      { label: 'Facebook', data: [77151895, 90657773], backgroundColor: DARK_GRAY, stack: 's', borderWidth: 0 },
+      { label: 'Instagram', data: [65899210, 85290972], backgroundColor: TAN, stack: 's', borderWidth: 0 },
+      { label: 'Audience Network', data: [829220, 46826663], backgroundColor: BAD, stack: 's', borderWidth: 0 },
+      { label: 'Other', data: [476073, 697887], backgroundColor: TAN_LIGHT, stack: 's', borderWidth: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 10, weight: '500' } } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + (c.parsed.y/1000000).toFixed(1) + 'M' } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
+      y: { stacked: true, grid: { color: '#e8e0cc' }, ticks: { callback: v => (v/1000000).toFixed(0) + 'M', font: { size: 10 } } }
+    }
+  }
+});
+
+// SLIDE 6 — Mix donuts
+const donutOpts = {
+  responsive: true, maintainAspectRatio: false, cutout: '58%',
+  plugins: {
+    legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 10, weight: '500' } } },
+    tooltip: { callbacks: { label: c => c.label + ' · $' + (c.raw/1000).toFixed(0) + 'K' } }
+  }
+};
+
+new Chart(document.getElementById('mixBefore'), {
+  type: 'doughnut',
+  data: {
+    labels: ['CO  74.5%', 'VO  25.5%'],
+    datasets: [{ data: [2704560, 923913], backgroundColor: [BAD, GOOD], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: donutOpts
+});
+
+new Chart(document.getElementById('mixAfter'), {
+  type: 'doughnut',
+  data: {
+    labels: ['CO  80.5%', 'VO  19.5%'],
+    datasets: [{ data: [3020739, 729626], backgroundColor: [BAD, GOOD], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: donutOpts
+});
+
+new Chart(document.getElementById('voCoRoas'), {
+  type: 'bar',
+  data: {
+    labels: ['VO', 'CO'],
+    datasets: [
+      { label: 'Before', data: [1.847, 0.894], backgroundColor: BLACK, borderWidth: 0 },
+      { label: 'After', data: [1.529, 0.707], backgroundColor: [GOOD, BAD], borderWidth: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 10, weight: '500' } } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
+      y: { grid: { color: '#e8e0cc' }, ticks: { font: { size: 10 } }, beginAtZero: true }
+    }
+  }
+});
+
+// SLIDE 8 — Decomposition
+new Chart(document.getElementById('decompChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Free shipping / AOV', 'Click attribution', 'VO→CO mix shift', 'Incremental Attribution', 'True residual decline'],
+    datasets: [
+      { label: 'ROAS points', data: [5, 9, 5, 4, 3], backgroundColor: [BAD, BAD, BAD, BAD, BLACK], borderWidth: 0 }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '~' + c.parsed.x + ' ROAS pts of 26 total' } } },
+    scales: {
+      x: { grid: { color: '#e8e0cc' }, ticks: { callback: v => v + ' pts', font: { size: 10 } }, beginAtZero: true, max: 12 },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
