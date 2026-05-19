@@ -773,59 +773,39 @@ new Chart(document.getElementById('aovChart'), {
   }
 });
 
-// SLIDE 7 — VO vs CO combo (grouped bars + ROAS lines)
+// SLIDE 7 — VO vs CO all-bar grouped (Spend dark, ROAS olive · light=Before, dark=After)
 new Chart(document.getElementById('voCoCombo'), {
+  type: 'bar',
   data: {
     labels: ['VO', 'CO'],
     datasets: [
       {
-        type: 'bar',
         label: 'Spend · Before',
         data: [923913, 2704560],
-        backgroundColor: BLACK,
+        backgroundColor: '#7a7a7a',
         borderWidth: 0,
-        yAxisID: 'y',
-        order: 3
+        yAxisID: 'y'
       },
       {
-        type: 'bar',
         label: 'Spend · After',
         data: [729626, 3020739],
-        backgroundColor: [GOOD, BAD],
+        backgroundColor: BLACK,
         borderWidth: 0,
-        yAxisID: 'y',
-        order: 3
+        yAxisID: 'y'
       },
       {
-        type: 'line',
         label: 'ROAS · Before',
         data: [1.847, 0.894],
-        borderColor: '#888',
-        backgroundColor: '#888',
-        pointBackgroundColor: '#888',
-        pointBorderColor: '#888',
-        pointRadius: 5,
-        pointHoverRadius: 6,
-        borderWidth: 2,
-        borderDash: [4, 4],
-        tension: 0,
-        yAxisID: 'y1',
-        order: 1
+        backgroundColor: '#a4b389',
+        borderWidth: 0,
+        yAxisID: 'y1'
       },
       {
-        type: 'line',
         label: 'ROAS · After',
         data: [1.529, 0.707],
-        borderColor: BLACK,
-        backgroundColor: BLACK,
-        pointBackgroundColor: BLACK,
-        pointBorderColor: BLACK,
-        pointRadius: 5,
-        pointHoverRadius: 6,
-        borderWidth: 2.5,
-        tension: 0,
-        yAxisID: 'y1',
-        order: 1
+        backgroundColor: GOOD,
+        borderWidth: 0,
+        yAxisID: 'y1'
       }
     ]
   },
@@ -837,24 +817,24 @@ new Chart(document.getElementById('voCoCombo'), {
         callbacks: {
           label: c => c.dataset.label.startsWith('Spend')
             ? c.dataset.label + ': $' + (c.parsed.y/1000).toFixed(0) + 'K'
-            : c.dataset.label + ': ' + c.parsed.y.toFixed(2)
+            : c.dataset.label + ': ' + c.parsed.y.toFixed(2) + ' ROAS'
         }
       }
     },
     scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 12, weight: '600' } } },
+      x: { grid: { display: false }, ticks: { font: { size: 13, weight: '600' } } },
       y: {
         type: 'linear', position: 'left',
         grid: { color: '#e8e0cc' },
-        ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M', font: { size: 10 } },
-        title: { display: true, text: 'Spend', font: { size: 10, weight: '500', family: "'DM Mono', monospace" }, color: '#000' },
+        ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M', font: { size: 10 }, color: '#3a3a3a' },
+        title: { display: true, text: 'Spend (gray + black bars)', font: { size: 10, weight: '500', family: "'DM Mono', monospace" }, color: '#3a3a3a' },
         beginAtZero: true
       },
       y1: {
         type: 'linear', position: 'right',
         grid: { display: false },
-        ticks: { callback: v => v.toFixed(1), font: { size: 10 } },
-        title: { display: true, text: 'ROAS', font: { size: 10, weight: '500', family: "'DM Mono', monospace" }, color: '#000' },
+        ticks: { callback: v => v.toFixed(1), font: { size: 10 }, color: GOOD },
+        title: { display: true, text: 'ROAS (olive bars)', font: { size: 10, weight: '500', family: "'DM Mono', monospace" }, color: GOOD },
         beginAtZero: true, suggestedMax: 2.2
       }
     }
