@@ -137,6 +137,10 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
 
 /* BIG NUMBER + ARROW (VO/CO slide) */
 .big-arrow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 0.5rem 0 1rem; }
+.big-arrow-grid.compact { gap: 1rem; margin: 0.25rem 0 0.85rem; }
+.big-arrow-grid.compact .big-arrow-card { padding: 1.1rem 1.25rem; gap: 0.25rem; }
+.big-arrow-grid.compact .big-arrow-card .arrow-number { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+.big-arrow-grid.compact .big-arrow-card .arrow-icon { font-size: 1.8rem; }
 .big-arrow-card {
   background: var(--white); padding: 1.6rem;
   border-left: 4px solid var(--black);
@@ -186,8 +190,8 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
 /* STEPS — next steps slide */
 .steps { display: grid; grid-template-columns: 1fr; gap: 0.85rem; margin: 1rem 0; }
 .step-row {
-  display: grid; grid-template-columns: 40px 1fr 200px; gap: 1.25rem;
-  padding: 1rem 1.1rem; background: var(--white); border-left: 4px solid var(--black);
+  display: grid; grid-template-columns: 40px 1fr; gap: 1.25rem;
+  padding: 0.85rem 1.1rem; background: var(--white); border-left: 4px solid var(--black);
   align-items: start;
 }
 .step-row .step-num { font-family: var(--font-sans); font-weight: 600; font-size: 1.5rem; line-height: 1; letter-spacing: -1px; }
@@ -428,33 +432,31 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
   <div class="slide__inner">
     <div class="section-tag reveal"><span class="tag-num">03</span><span class="tag-name">VO → CO Overcorrection · Ongoing · ~5 ROAS points</span></div>
     <h2 class="reveal">We pulled spend out of the higher-ROAS structure.</h2>
-    <p class="subhead reveal">Across all campaigns set to Value vs Conversions performance goals: VO share dropped 6 points, CO grew 6. The problem isn't the direction — it's that VO continues to dramatically outperform CO on ROAS.</p>
+    <p class="subhead reveal">VO share of spend dropped 6 points while CO grew 6. The direction isn't the issue — it's that VO continues to dramatically outperform CO on ROAS.</p>
 
-    <div class="big-arrow-grid reveal">
+    <div class="big-arrow-grid compact reveal">
       <div class="big-arrow-card bad">
         <div class="arrow-label">VO share of spend</div>
         <div class="arrow-main">
           <span class="arrow-icon">▼</span>
           <span class="arrow-number">−23.5%</span>
         </div>
-        <div class="arrow-context">25.5% of spend → 19.5% of spend</div>
-        <div class="arrow-detail">−$194K from VO · +$316K to CO</div>
+        <div class="arrow-detail">25.5% → 19.5% · −$194K from VO · +$316K to CO</div>
       </div>
       <div class="big-arrow-card good">
-        <div class="arrow-label">VO still posts vs. CO</div>
+        <div class="arrow-label">VO ROAS premium</div>
         <div class="arrow-main">
           <span class="arrow-icon">▲</span>
           <span class="arrow-number">2.2×</span>
         </div>
-        <div class="arrow-context">VO blended ROAS of 1.53 vs. CO blended ROAS of 0.71</div>
-        <div class="arrow-detail">After-period · classified by actual Performance goal</div>
+        <div class="arrow-detail">VO blended ROAS 1.53 vs. CO blended ROAS 0.71 (after)</div>
       </div>
     </div>
 
-    <div class="chart-box reveal" style="margin-top: 0.5rem;">
-      <h3>Blended ROAS · VO vs. CO · before and after</h3>
-      <div class="chart-sub">Both buckets declined — but VO's lead widened in absolute terms</div>
-      <div class="chart-canvas short"><canvas id="voCoRoas"></canvas></div>
+    <div class="chart-box reveal">
+      <h3>Spend and ROAS by performance goal · before vs. after</h3>
+      <div class="chart-sub">Spend (bars, left axis) · Blended ROAS (line, right axis)</div>
+      <div class="chart-canvas short"><canvas id="voCoCombo"></canvas></div>
     </div>
   </div>
 </section>
@@ -500,7 +502,7 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
 <section class="slide">
   <div class="slide__inner">
     <div class="section-tag reveal"><span class="tag-num">Action</span><span class="tag-name">What we're proposing · open to your input</span></div>
-    <h2 class="reveal">Four actions. The first two are immediate.</h2>
+    <h2 class="reveal">Four actions.</h2>
 
     <div class="steps reveal">
       <div class="step-row">
@@ -508,36 +510,32 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
         <div>
           <h3>Exclude Audience Network as a placement, account-wide.</h3>
           <p>Reclaim ~$40K in spend and remove 46.8M low-converting impressions from Meta's training data. The reallocation should immediately tighten CVR on remaining placements.</p>
-          <div class="step-why">Why now · No tradeoff. We're not bidding for this inventory and it's polluting the algorithm's signal.</div>
+          <div class="step-why">Why · No tradeoff — we're not actively bidding for this inventory and it's polluting the algorithm's signal.</div>
         </div>
-        <span class="step-tag quick">Quick win · do this week</span>
       </div>
       <div class="step-row">
         <div class="step-num">02</div>
         <div>
-          <h3>Switch top ASC campaigns to 7-day click + 1-day view.</h3>
-          <p>Apply first to IA Partnership ($928K), IA CostCap ($374K), IA ($358K), and Partnership Winners ($308K) — combined ~$2.0M of after-period spend.</p>
-          <div class="step-why">Why this window · This is what Meta still allows post-attribution change AND the closest match to our pre-March setup. Wider window = more events to train on = the signal recovery we need.</div>
+          <h3>Switch top ASC campaigns to 7-day click + 1-day engaged-view.</h3>
+          <p>Apply to IA Partnership ($928K), IA CostCap ($374K), IA ($358K), and Partnership Winners ($308K) — combined ~$2.0M of after-period spend. These four campaigns make up the largest concentration of click-optimized spend in the account, so the signal recovery will have the highest leverage there first.</p>
+          <div class="step-why">Why this window · 1-day engaged-view (3-second views) is exactly the bucket Meta moved out of click attribution. Adding it back into the optimization window pulls those events back into the algorithm's training data and gets us closest to our pre-March setup.</div>
         </div>
-        <span class="step-tag quick">Quick win · do this week</span>
       </div>
       <div class="step-row">
         <div class="step-num">03</div>
         <div>
-          <h3>Rebalance VO/CO mix — pull back to ~25% VO share.</h3>
-          <p>Initial recommendation: pull from <strong>ASC|CO|IA</strong> (+$315K vs prior) and <strong>ASC|CO|IA|Partnership</strong> (+$307K vs prior), restore budget to <strong>ASC|VO|AEB</strong> (−$156K vs prior) and <strong>ASC|VO|CreativeTesting</strong> (−$145K vs prior). Open to your input on the specific moves.</p>
-          <div class="step-why">Why these · They're the largest single VO budget cuts and the largest CO additions — flipping them gets us back to pre-shift composition with minimal disruption.</div>
+          <h3>Rebalance VO/CO mix — more VO, including for new launches.</h3>
+          <p>Immediate move: shift <strong>ASC|CO|IA|CreativeTesting</strong> (+$62K, new) back to VO. It's not showing improvement under CO, and creative testing runs more efficiently under VO. Going forward, we need to be more disciplined for launches — we've been defaulting to CO without a strong reason, and VO is the better starting point given its 2.2× ROAS premium.</p>
+          <div class="step-why">Why · VO continues to materially outperform CO on ROAS (1.53 vs 0.71). The discipline question is when CO is actually the right call — not the default.</div>
         </div>
-        <span class="step-tag">Strategic · needs alignment</span>
       </div>
       <div class="step-row">
         <div class="step-num">04</div>
         <div>
-          <h3>Report blended + IA-attributed ROAS alongside click in pacing.</h3>
-          <p>Click ROAS in isolation now overstates the decline by 10–15 points. Update the weekly template so decisions get made against the right number.</p>
-          <div class="step-why">Why · Reporting fix only — no campaign changes required.</div>
+          <h3>Show all three ROAS views side-by-side in weekly pacing.</h3>
+          <p>Right now we only track click-attributed ROAS, which has dropped the most because of Meta's measurement change. Adding blended ROAS (which includes view-through purchases) and IA-attributed ROAS to the weekly template gives us all three numbers at once — so we can see when a click-ROAS drop reflects a real performance issue vs. Meta reshuffling credit between windows.</p>
+          <div class="step-why">Why · Reporting change only — no campaign work required. Just makes sure we're making decisions against the full picture.</div>
         </div>
-        <span class="step-tag">Strategic · needs alignment</span>
       </div>
     </div>
   </div>
@@ -775,25 +773,66 @@ new Chart(document.getElementById('aovChart'), {
   }
 });
 
-// SLIDE 7 — VO vs CO ROAS
-new Chart(document.getElementById('voCoRoas'), {
-  type: 'bar',
+// SLIDE 7 — VO vs CO combo (spend bars + ROAS line)
+new Chart(document.getElementById('voCoCombo'), {
   data: {
-    labels: ['VO', 'CO'],
+    labels: ['VO Before', 'VO After', 'CO Before', 'CO After'],
     datasets: [
-      { label: 'Before', data: [1.847, 0.894], backgroundColor: BLACK, borderWidth: 0, barThickness: 60 },
-      { label: 'After', data: [1.529, 0.707], backgroundColor: [GOOD, BAD], borderWidth: 0, barThickness: 60 }
+      {
+        type: 'bar',
+        label: 'Spend',
+        data: [923913, 729626, 2704560, 3020739],
+        backgroundColor: [GOOD, GOOD, BAD, BAD],
+        borderWidth: 0,
+        yAxisID: 'y',
+        barThickness: 50,
+        order: 2
+      },
+      {
+        type: 'line',
+        label: 'Blended ROAS',
+        data: [1.847, 1.529, 0.894, 0.707],
+        borderColor: BLACK,
+        backgroundColor: BLACK,
+        pointBackgroundColor: BLACK,
+        pointBorderColor: BLACK,
+        pointRadius: 5,
+        pointHoverRadius: 6,
+        borderWidth: 2.5,
+        tension: 0,
+        yAxisID: 'y1',
+        order: 1
+      }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 11, weight: '500' } } },
-      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) + ' ROAS' } }
+      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } },
+      tooltip: {
+        callbacks: {
+          label: c => c.dataset.label === 'Spend'
+            ? 'Spend: $' + (c.parsed.y/1000).toFixed(0) + 'K'
+            : 'ROAS: ' + c.parsed.y.toFixed(2)
+        }
+      }
     },
     scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 12, weight: '600' } } },
-      y: { grid: { color: '#e8e0cc' }, ticks: { font: { size: 10 } }, beginAtZero: true }
+      x: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
+      y: {
+        type: 'linear', position: 'left',
+        grid: { color: '#e8e0cc' },
+        ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M', font: { size: 10 } },
+        title: { display: true, text: 'Spend', font: { size: 10, weight: '500', family: "'DM Mono', monospace" }, color: '#000' },
+        beginAtZero: true
+      },
+      y1: {
+        type: 'linear', position: 'right',
+        grid: { display: false },
+        ticks: { callback: v => v.toFixed(1), font: { size: 10 } },
+        title: { display: true, text: 'ROAS', font: { size: 10, weight: '500', family: "'DM Mono', monospace" }, color: '#000' },
+        beginAtZero: true, suggestedMax: 2.2
+      }
     }
   }
 });
