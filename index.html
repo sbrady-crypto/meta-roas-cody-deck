@@ -19,9 +19,9 @@
   --good-soft: #dfe5d2;
   --line: #d4ccba;
   --muted: #6f6759;
-  --gray-bar: #1a1a1a;
   --tan: #b8a888;
   --tan-light: #d8cdb5;
+  --dark-gray: #3a3a3a;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: 'DM Mono', 'SF Mono', Menlo, monospace;
   --ease: cubic-bezier(0.39, 0.575, 0.565, 1);
@@ -33,7 +33,7 @@ body { font-family: var(--font-sans); background: var(--bg); color: var(--black)
 
 .slide {
   min-height: 100vh; max-height: 100vh;
-  padding: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 5vw, 4.5rem);
+  padding: clamp(2.25rem, 4.5vw, 3.5rem) clamp(2rem, 5vw, 4rem);
   scroll-snap-align: start;
   display: flex; flex-direction: column; justify-content: center;
   position: relative; overflow: hidden;
@@ -41,111 +41,172 @@ body { font-family: var(--font-sans); background: var(--bg); color: var(--black)
 .slide--dark { background: var(--black); color: var(--white); }
 .slide__inner { max-width: 1280px; margin: 0 auto; width: 100%; }
 
-/* SECTION TAG — prominent header replacement for tiny eyebrow */
 .section-tag {
   display: inline-flex; align-items: center; gap: 16px;
-  padding: 10px 18px;
+  padding: 9px 16px;
   background: var(--black); color: var(--white);
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-  margin-bottom: 1.75rem;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 1.4rem;
 }
 .section-tag .tag-num { font-weight: 500; opacity: 0.6; }
 .section-tag .tag-name { font-weight: 500; }
 .slide--dark .section-tag { background: var(--white); color: var(--black); }
 
 h1 { font-family: var(--font-sans); font-size: clamp(2.5rem, 5.5vw, 4.5rem); font-weight: 600; line-height: 1.04; letter-spacing: -1.5px; margin-bottom: 1rem; max-width: 18ch; }
-h2 { font-family: var(--font-sans); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 600; line-height: 1.08; letter-spacing: -0.8px; margin-bottom: 1rem; max-width: 22ch; }
+h2 { font-family: var(--font-sans); font-size: clamp(1.7rem, 3.3vw, 2.6rem); font-weight: 600; line-height: 1.1; letter-spacing: -0.8px; margin-bottom: 0.5rem; max-width: 24ch; }
 h3 { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.3px; }
 
 p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-width: 60ch; }
 .lead { font-size: 1.05rem; line-height: 1.5; max-width: 56ch; font-weight: 400; }
 
-/* Title slide */
+.subhead {
+  font-family: var(--font-sans); font-size: 1.05rem; font-weight: 500;
+  line-height: 1.4; max-width: 70ch; margin-bottom: 1.25rem; color: var(--bad);
+}
+.subhead.neutral { color: var(--black); }
+
 .title-slide h1 { font-size: clamp(2.8rem, 6vw, 5.2rem); max-width: 17ch; font-weight: 500; }
 
-/* Driver grid */
-.driver-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 2rem; }
-.driver-card {
-  padding: 1.25rem 1.25rem 1.25rem; background: var(--white);
-  border-top: 4px solid var(--black);
-  display: flex; flex-direction: column; gap: 0.5rem; min-height: 210px;
+/* TIMELINE — slide 2 */
+.timeline-wrap { margin-top: 1rem; padding: 2rem 0 0.5rem; }
+.timeline-track {
+  position: relative; height: 3px; background: var(--black);
+  margin: 4rem 0 0; max-width: 1100px;
 }
-.driver-card.bad { border-top-color: var(--bad); }
+.timeline-marker {
+  position: absolute; top: -8px; width: 18px; height: 18px;
+  background: var(--bad); border: 3px solid var(--bg);
+  border-radius: 50%;
+}
+.timeline-label {
+  position: absolute; top: -90px; transform: translateX(-50%);
+  font-family: var(--font-sans); font-size: 12px; font-weight: 600;
+  letter-spacing: -0.2px; min-width: 200px; text-align: center;
+}
+.timeline-label .label-date { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase; opacity: 0.65; display: block; margin-bottom: 0.35rem; font-weight: 500; }
+.timeline-label .label-text { line-height: 1.2; color: var(--bad); }
+.timeline-endpoints {
+  display: flex; justify-content: space-between; margin-top: 1rem;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  max-width: 1100px;
+}
+
+/* DRIVER GRID — same as before */
+.driver-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 1.5rem; }
+.driver-card {
+  padding: 1.1rem; background: var(--white);
+  border-top: 4px solid var(--bad);
+  display: flex; flex-direction: column; gap: 0.45rem; min-height: 180px;
+}
 .driver-card .driver-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; }
-.driver-card .driver-headline { font-family: var(--font-sans); font-weight: 500; font-size: 1.15rem; line-height: 1.2; letter-spacing: -0.3px; flex: 1; margin-top: 0.25rem; }
-.driver-card .driver-stat { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.8px; padding: 6px 10px; background: var(--bg); align-self: flex-start; }
-.driver-card.bad .driver-stat { background: var(--bad-soft); color: var(--bad); }
-.driver-card .driver-date { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.55; padding-top: 0.5rem; border-top: 1px solid var(--line); margin-top: auto; }
+.driver-card .driver-headline { font-family: var(--font-sans); font-weight: 600; font-size: 1rem; line-height: 1.22; letter-spacing: -0.3px; flex: 1; margin-top: 0.2rem; }
+.driver-card .driver-stat { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.6px; padding: 5px 9px; background: var(--bad-soft); color: var(--bad); align-self: flex-start; font-weight: 500; }
+.driver-card .driver-date { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.55; padding-top: 0.4rem; border-top: 1px solid var(--line); margin-top: auto; }
 
 .footnote-bar {
-  margin-top: 1.75rem; padding: 0.85rem 1.1rem; background: var(--good-soft);
+  margin-top: 1.25rem; padding: 0.85rem 1.1rem; background: var(--good-soft);
   border-left: 3px solid var(--good);
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase;
   display: inline-block;
 }
 .footnote-bar.bad { background: var(--bad-soft); border-left-color: var(--bad); color: var(--bad); }
 .footnote-bar.neutral { background: var(--white); border-left-color: var(--black); color: var(--black); }
 
-/* Chart containers */
-.chart-grid { display: grid; gap: 1rem; margin-top: 1.25rem; }
+/* CHARTS */
+.chart-grid { display: grid; gap: 1rem; margin-top: 0.75rem; }
 .chart-grid.two { grid-template-columns: 1fr 1fr; }
 .chart-grid.three { grid-template-columns: repeat(3, 1fr); }
+.chart-grid.split { grid-template-columns: 380px 1fr; }
 .chart-box { background: var(--white); border: 1px solid var(--line); padding: 1rem 1.1rem; }
 .chart-box h3 { margin-bottom: 0.25rem; }
 .chart-box .chart-sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; opacity: 0.6; margin-bottom: 0.75rem; }
 .chart-canvas { position: relative; height: 220px; }
 .chart-canvas.short { height: 180px; }
+.chart-canvas.tall { height: 280px; }
 
-/* Stat strip */
-.stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin: 1.5rem 0; }
+/* STAT STRIP */
+.stat-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin: 1.25rem 0; }
 .stat-strip.two { grid-template-columns: 1fr 1fr; max-width: 720px; }
+.stat-strip.four { grid-template-columns: repeat(4, 1fr); }
 .stat-block { padding-top: 0.85rem; border-top: 2px solid var(--black); }
 .stat-block .stat-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; margin-bottom: 0.4rem; font-weight: 500; }
-.stat-block .stat-value { font-family: var(--font-sans); font-weight: 600; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; margin-bottom: 0.3rem; letter-spacing: -1px; }
+.stat-block .stat-value { font-family: var(--font-sans); font-weight: 600; font-size: clamp(1.6rem, 2.6vw, 2.4rem); line-height: 1; margin-bottom: 0.3rem; letter-spacing: -1px; }
 .stat-block .stat-value.bad { color: var(--bad); }
 .stat-block .stat-value.good { color: var(--good); }
 .stat-block .stat-compare { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; opacity: 0.65; }
 
-/* IA Comparison Cards */
-.ia-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.25rem; max-width: 900px; }
-.ia-card { padding: 1.5rem; background: var(--white); border: 1px solid var(--line); }
+/* BIG NUMBER + ARROW (VO/CO slide) */
+.big-arrow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 0.5rem 0 1rem; }
+.big-arrow-card {
+  background: var(--white); padding: 1.6rem;
+  border-left: 4px solid var(--black);
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.big-arrow-card.bad { border-left-color: var(--bad); }
+.big-arrow-card.good { border-left-color: var(--good); }
+.big-arrow-card .arrow-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 1.3px; text-transform: uppercase; font-weight: 500; margin-bottom: 0.5rem; }
+.big-arrow-card .arrow-main { display: flex; align-items: baseline; gap: 0.6rem; }
+.big-arrow-card .arrow-icon { font-family: var(--font-sans); font-size: 2.4rem; font-weight: 600; line-height: 1; }
+.big-arrow-card.bad .arrow-icon { color: var(--bad); }
+.big-arrow-card.good .arrow-icon { color: var(--good); }
+.big-arrow-card .arrow-number { font-family: var(--font-sans); font-size: clamp(2.4rem, 4vw, 3.5rem); font-weight: 600; line-height: 1; letter-spacing: -1.5px; }
+.big-arrow-card.bad .arrow-number { color: var(--bad); }
+.big-arrow-card.good .arrow-number { color: var(--good); }
+.big-arrow-card .arrow-context { font-family: var(--font-sans); font-size: 0.9rem; line-height: 1.35; margin-top: 0.5rem; max-width: 38ch; font-weight: 500; }
+.big-arrow-card .arrow-detail { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; opacity: 0.65; margin-top: 0.5rem; }
+
+/* IA Compare */
+.ia-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.85rem; max-width: 900px; }
+.ia-card { padding: 1.25rem; background: var(--white); border: 1px solid var(--line); }
 .ia-card.now { border: 1px solid var(--bad); }
-.ia-card .ia-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; margin-bottom: 1rem; font-weight: 500; }
+.ia-card .ia-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; margin-bottom: 0.85rem; font-weight: 500; }
 .ia-card.now .ia-label { color: var(--bad); }
-.ia-card .ia-title { font-family: var(--font-sans); font-weight: 600; font-size: 1.4rem; margin-bottom: 1rem; letter-spacing: -0.5px; }
+.ia-card .ia-title { font-family: var(--font-sans); font-weight: 600; font-size: 1.2rem; margin-bottom: 0.85rem; letter-spacing: -0.5px; }
 .ia-list { list-style: none; padding: 0; margin: 0; }
-.ia-list li { padding: 0.55rem 0; border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+.ia-list li { padding: 0.5rem 0; border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 0.88rem; display: flex; align-items: center; gap: 10px; }
 .ia-list li:last-child { border-bottom: none; }
-.ia-list .ia-mark { font-family: var(--font-mono); font-size: 12px; font-weight: 500; width: 16px; }
+.ia-list .ia-mark { font-family: var(--font-mono); font-size: 11px; font-weight: 500; width: 14px; }
 .ia-list .ia-mark.yes { color: var(--good); }
 .ia-list .ia-mark.no { color: var(--bad); }
 .ia-list .ia-mark.box { color: var(--bad); }
 .ia-list li.struck { opacity: 0.4; text-decoration: line-through; }
-.ia-list li.only { background: var(--bad-soft); padding: 0.65rem 0.85rem; margin: 0.25rem -0.85rem; }
+.ia-list li.only { background: var(--bad-soft); padding: 0.6rem 0.8rem; margin: 0.2rem -0.8rem; }
 
-/* Checkmarks */
-.checkmarks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin: 2rem 0; }
-.checkmark-card { padding: 1.5rem; background: var(--good-soft); border-left: 4px solid var(--good); }
-.checkmark-card .check { font-family: var(--font-sans); font-weight: 600; font-size: 2rem; color: var(--good); line-height: 1; margin-bottom: 0.65rem; }
-.checkmark-card h3 { font-size: 13px; margin-bottom: 0.3rem; }
-.checkmark-card .status { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--good); }
+/* CHECKMARKS — combined slide */
+.combo-grid { display: grid; grid-template-columns: 280px 1fr; gap: 1.5rem; margin-top: 0.5rem; }
+.checkmarks-vert { display: flex; flex-direction: column; gap: 0.6rem; }
+.check-mini {
+  padding: 0.7rem 0.9rem; background: var(--good-soft); border-left: 3px solid var(--good);
+  display: flex; align-items: center; gap: 0.85rem;
+}
+.check-mini .check-icon { font-family: var(--font-sans); font-weight: 600; font-size: 1.1rem; color: var(--good); }
+.check-mini .check-content h4 { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; margin: 0; }
+.check-mini .check-content .check-status { font-family: var(--font-mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 1.1px; color: var(--good); }
 
-/* Steps */
-.steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; margin: 1.5rem 0; }
-.step { display: grid; grid-template-columns: 48px 1fr; gap: 0.85rem; padding: 1.15rem; background: var(--white); border-left: 4px solid var(--black); align-items: start; }
-.step.priority { border-left-color: var(--bad); }
-.step .step-num { font-family: var(--font-sans); font-weight: 600; font-size: 1.8rem; line-height: 1; letter-spacing: -1px; }
-.step.priority .step-num { color: var(--bad); }
-.step h3 { font-family: var(--font-sans); font-weight: 600; font-size: 0.95rem; text-transform: none; letter-spacing: -0.2px; line-height: 1.25; margin-bottom: 0.35rem; }
-.step p { font-size: 0.82rem; line-height: 1.45; max-width: 100%; }
+/* STEPS — next steps slide */
+.steps { display: grid; grid-template-columns: 1fr; gap: 0.85rem; margin: 1rem 0; }
+.step-row {
+  display: grid; grid-template-columns: 40px 1fr 200px; gap: 1.25rem;
+  padding: 1rem 1.1rem; background: var(--white); border-left: 4px solid var(--black);
+  align-items: start;
+}
+.step-row .step-num { font-family: var(--font-sans); font-weight: 600; font-size: 1.5rem; line-height: 1; letter-spacing: -1px; }
+.step-row h3 { font-family: var(--font-sans); font-weight: 600; font-size: 0.95rem; text-transform: none; letter-spacing: -0.2px; line-height: 1.25; margin-bottom: 0.3rem; }
+.step-row p { font-size: 0.82rem; line-height: 1.45; max-width: 100%; }
+.step-row .step-why { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding-top: 0.4rem; border-top: 1px solid var(--line); margin-top: 0.4rem; }
+.step-row .step-tag {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.2px; text-transform: uppercase;
+  padding: 4px 9px; background: var(--bg); align-self: start; text-align: center;
+  font-weight: 500;
+}
+.step-row .step-tag.quick { background: var(--bad-soft); color: var(--bad); }
 
-/* Closing */
+/* CLOSING */
 .closing-statement { font-family: var(--font-sans); font-weight: 500; font-size: clamp(2rem, 4.5vw, 3.6rem); line-height: 1.1; max-width: 22ch; letter-spacing: -1.2px; }
 .closing-statement em { font-style: italic; font-weight: 500; color: var(--good); }
 
-/* Progress + Nav */
+/* PROGRESS + NAV */
 .progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--black); width: 0%; z-index: 100; transition: width 0.25s ease; }
-.slide--dark ~ .progress { background: var(--white); }
 .slide-counter { position: fixed; bottom: 1rem; left: 1.25rem; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; opacity: 0.45; z-index: 10; }
 .slide-counter.invert { color: var(--white); }
 .nav-hint { position: fixed; bottom: 1rem; right: 1.25rem; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.3px; opacity: 0.45; z-index: 10; }
@@ -157,9 +218,12 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
 .reveal:nth-child(3) { transition-delay: 0.14s; }
 .reveal:nth-child(4) { transition-delay: 0.21s; }
 .reveal:nth-child(5) { transition-delay: 0.28s; }
+.reveal:nth-child(6) { transition-delay: 0.35s; }
 
 @media (max-width: 900px) {
-  .driver-grid, .stat-strip, .stat-strip.two, .chart-grid.two, .chart-grid.three, .checkmarks, .steps, .ia-compare { grid-template-columns: 1fr; }
+  .driver-grid, .stat-strip, .stat-strip.two, .stat-strip.four, .chart-grid.two, .chart-grid.three, .chart-grid.split, .ia-compare, .combo-grid, .big-arrow-grid { grid-template-columns: 1fr; }
+  .step-row { grid-template-columns: 40px 1fr; }
+  .step-row .step-tag { grid-column: 2; }
   .nav-hint { display: none; }
   .slide { max-height: none; min-height: auto; padding: 2.5rem 1.5rem; }
 }
@@ -179,178 +243,233 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
   </div>
 </section>
 
-<!-- 02 FOUR DRIVERS -->
+<!-- 02 SET THE STAGE — TIMELINE -->
 <section class="slide">
   <div class="slide__inner">
-    <div class="section-tag reveal"><span class="tag-num">Overview</span><span class="tag-name">The four drivers</span></div>
-    <h2 class="reveal">Four overlapping changes. Not one cause.</h2>
+    <div class="section-tag reveal"><span class="tag-num">Setting the stage</span><span class="tag-name">The before / after period</span></div>
+    <h2 class="reveal">Four changes landed in a three-week window.</h2>
+    <p class="subhead neutral reveal">All comparisons in this deck are Feb 1 – Mar 25 (before) vs. Mar 26 – May 17 (after). The shift is clearly visible in account delivery metrics.</p>
 
-    <div class="driver-grid reveal">
-      <div class="driver-card bad">
-        <div class="driver-num">01 · Our change</div>
-        <div class="driver-headline">Lowered the free shipping threshold.</div>
-        <div class="driver-stat">First-time AOV ▼ 15.7%</div>
-        <div class="driver-date">Mar 3</div>
+    <div class="timeline-wrap reveal">
+      <div class="timeline-track">
+        <div class="timeline-marker" style="left: 4%;">
+          <div class="timeline-label" style="left: 0;">
+            <span class="label-date">Mar 3</span>
+            <span class="label-text">Free shipping threshold lowered</span>
+          </div>
+        </div>
+        <div class="timeline-marker" style="left: 45%;">
+          <div class="timeline-label" style="left: 0;">
+            <span class="label-date">Mar 26</span>
+            <span class="label-text">Meta attribution change + we adopted IA</span>
+          </div>
+        </div>
+        <div class="timeline-marker" style="left: 70%; background: var(--black);">
+          <div class="timeline-label" style="left: 0; top: -65px;">
+            <span class="label-date">Ongoing</span>
+            <span class="label-text" style="color: var(--black);">Shifted spend from VO → CO</span>
+          </div>
+        </div>
       </div>
-      <div class="driver-card bad">
-        <div class="driver-num">02 · Platform</div>
-        <div class="driver-headline">Meta broke engaged-view out of click attribution.</div>
-        <div class="driver-stat">Click purchases ▼ 23.5%</div>
-        <div class="driver-date">Mar 26</div>
-      </div>
-      <div class="driver-card bad">
-        <div class="driver-num">03 · Our change</div>
-        <div class="driver-headline">Overcorrected from VO to CO.</div>
-        <div class="driver-stat">VO spend ▼ 21% · Lower-ROAS bucket</div>
-        <div class="driver-date">Ongoing</div>
-      </div>
-      <div class="driver-card bad">
-        <div class="driver-num">04 · Our change</div>
-        <div class="driver-headline">Adopted Incremental Attribution.</div>
-        <div class="driver-stat">Lost optimization windows</div>
-        <div class="driver-date">Late Mar</div>
+      <div class="timeline-endpoints">
+        <span>Feb 1</span>
+        <span>May 17</span>
       </div>
     </div>
 
-    <div class="footnote-bar reveal" style="margin-top: 2rem;">✓ Pixel, conversion API, and catalog — all clean. Not a tracking issue.</div>
+    <div class="chart-box reveal" style="margin-top: 1.5rem;">
+      <h3>Weekly CPM — proof the shift happened</h3>
+      <div class="chart-sub">Account-wide CPM fell from ~$27 to ~$11 starting late March</div>
+      <div class="chart-canvas short"><canvas id="cpmTrend"></canvas></div>
+    </div>
   </div>
 </section>
 
-<!-- 03 DRIVER 1 — FREE SHIPPING -->
+<!-- 03 RULED OUT + WHAT WE FOUND -->
 <section class="slide">
   <div class="slide__inner">
-    <div class="section-tag reveal"><span class="tag-num">01</span><span class="tag-name">Free Shipping Threshold · Mar 3</span></div>
-    <h2 class="reveal">First-time AOV dropped 3× harder than returning.</h2>
+    <div class="section-tag reveal"><span class="tag-num">Overview</span><span class="tag-name">What we ruled out · What we found</span></div>
+    <h2 class="reveal">Not a tracking issue. It's four overlapping causes.</h2>
+    <p class="subhead neutral reveal">The reported -26 point drop in blended ROAS decomposes across four drivers. We'll dig into each in order of impact.</p>
 
-    <div class="chart-grid two reveal">
-      <div class="chart-box">
-        <h3>Average Order Value</h3>
-        <div class="chart-sub">First-time vs. returning · before vs. after Mar 3</div>
-        <div class="chart-canvas"><canvas id="aovChart"></canvas></div>
+    <div class="combo-grid reveal">
+      <div>
+        <h3 style="margin-bottom: 0.6rem;">Ruled out</h3>
+        <div class="checkmarks-vert">
+          <div class="check-mini">
+            <div class="check-icon">✓</div>
+            <div class="check-content"><h4>Pixel audit</h4><div class="check-status">Clean</div></div>
+          </div>
+          <div class="check-mini">
+            <div class="check-icon">✓</div>
+            <div class="check-content"><h4>Conversion API</h4><div class="check-status">Firing correctly</div></div>
+          </div>
+          <div class="check-mini">
+            <div class="check-icon">✓</div>
+            <div class="check-content"><h4>Product catalog</h4><div class="check-status">Intact</div></div>
+          </div>
+        </div>
       </div>
       <div class="chart-box">
-        <h3>Orders vs. Revenue · % change</h3>
-        <div class="chart-sub">First-time revenue fell on AOV, not orders</div>
-        <div class="chart-canvas"><canvas id="ordersRev"></canvas></div>
+        <h3>Where the −26 ROAS points came from</h3>
+        <div class="chart-sub">Best-estimate decomposition · directional</div>
+        <div class="chart-canvas tall"><canvas id="decompChart"></canvas></div>
       </div>
     </div>
-
-    <div class="footnote-bar bad reveal">Meta's CO optimization compounds this — CO finds the lower-AOV buyers most affected by the new threshold</div>
   </div>
 </section>
 
-<!-- 04 DRIVER 2 — CLICK ATTRIBUTION -->
+<!-- 04 DRIVER 1 — CLICK ATTRIBUTION -->
 <section class="slide">
   <div class="slide__inner">
-    <div class="section-tag reveal"><span class="tag-num">02</span><span class="tag-name">Click Attribution Change · Mar 26</span></div>
+    <div class="section-tag reveal"><span class="tag-num">01</span><span class="tag-name">Click Attribution Change · Mar 26 · ~9 ROAS points</span></div>
     <h2 class="reveal">Same demand. Different attribution windows.</h2>
+    <p class="subhead reveal">Meta's change is both a reporting shift AND an optimization signal loss. Click events feeding our algorithm fell 24% — the dashboard understates real performance, and the algorithm has less to train on.</p>
 
     <div class="chart-grid two reveal">
       <div class="chart-box">
-        <h3>Purchases by attribution window</h3>
-        <div class="chart-sub">Click ▼ · View + Engaged-View ▲</div>
-        <div class="chart-canvas"><canvas id="attribPurch"></canvas></div>
+        <h3>ROAS by attribution window</h3>
+        <div class="chart-sub">Click ROAS collapsed · view + engaged-view ROAS rose</div>
+        <div class="chart-canvas"><canvas id="roasWindow"></canvas></div>
       </div>
       <div class="chart-box">
-        <h3>Revenue by attribution window</h3>
-        <div class="chart-sub">$1.12M of click revenue moved to view/EV</div>
-        <div class="chart-canvas"><canvas id="attribRev"></canvas></div>
+        <h3>Click-attributed purchases (events feeding the algorithm)</h3>
+        <div class="chart-sub">37,887 → 28,979 events · −24% training signal</div>
+        <div class="chart-canvas"><canvas id="clickEvents"></canvas></div>
       </div>
     </div>
 
-    <div class="footnote-bar bad reveal">We optimize off click — algorithm now trains on ~24% fewer events. Dashboard understates true performance by 10–15 ROAS points.</div>
+    <div class="footnote-bar bad reveal">$1.12M of click revenue moved to view + engaged-view windows. Same purchases, different credit.</div>
   </div>
 </section>
 
-<!-- 05 DRIVER 2 — THE MECHANISM -->
+<!-- 05 DRIVER 1B — AUDIENCE NETWORK -->
 <section class="slide">
   <div class="slide__inner">
-    <div class="section-tag reveal"><span class="tag-num">02</span><span class="tag-name">The Mechanism · Placement Shift</span></div>
-    <h2 class="reveal">Reach exploded. Conversions didn't.</h2>
+    <div class="section-tag reveal"><span class="tag-num">01b</span><span class="tag-name">The Mechanism · Audience Network shift</span></div>
+    <h2 class="reveal">58% of new impressions came from a placement we weren't bidding on.</h2>
+    <p class="subhead reveal">With click signal degraded, Meta's algorithm found cheap reach on Audience Network (AN) — the off-Facebook display + video inventory. Tiny share of our spend, huge share of our delivery.</p>
+
+    <div class="stat-strip four reveal">
+      <div class="stat-block">
+        <div class="stat-label">Share of impression growth from AN</div>
+        <div class="stat-value bad">58%</div>
+        <div class="stat-compare">of all new impressions</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">AN share of account impressions</div>
+        <div class="stat-value bad">21%</div>
+        <div class="stat-compare">Up from 0.6% · 46.8M impr.</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">AN share of spend</div>
+        <div class="stat-value">1.0%</div>
+        <div class="stat-compare">Up from 0.4% · only $40K</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Reallocation opportunity</div>
+        <div class="stat-value good">$40K</div>
+        <div class="stat-compare">Move to higher-quality placements</div>
+      </div>
+    </div>
 
     <div class="chart-grid two reveal">
       <div class="chart-box">
         <h3>Spend by placement</h3>
-        <div class="chart-sub">Audience Network share barely changed</div>
-        <div class="chart-canvas"><canvas id="spendStack"></canvas></div>
+        <div class="chart-sub">AN barely visible — $40K of total spend</div>
+        <div class="chart-canvas short"><canvas id="spendStack"></canvas></div>
       </div>
       <div class="chart-box">
         <h3>Impressions by placement</h3>
-        <div class="chart-sub">Audience Network exploded from 0.6% to 21%</div>
-        <div class="chart-canvas"><canvas id="impStack"></canvas></div>
-      </div>
-    </div>
-
-    <div class="stat-strip reveal" style="margin-top: 1.5rem;">
-      <div class="stat-block">
-        <div class="stat-label">AN Spend</div>
-        <div class="stat-value">$40K</div>
-        <div class="stat-compare">1.0% of account · up from 0.4%</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-label">AN Impressions</div>
-        <div class="stat-value bad">46.8M</div>
-        <div class="stat-compare">21% of account · up from 0.6%</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-label">Share of impression growth</div>
-        <div class="stat-value bad">58%</div>
-        <div class="stat-compare">of all new impressions came from AN</div>
+        <div class="chart-sub">AN exploded from 0.6% to 21% of impressions</div>
+        <div class="chart-canvas short"><canvas id="impStack"></canvas></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 06 DRIVER 3 — VO → CO -->
+<!-- 06 DRIVER 2 — FREE SHIPPING -->
 <section class="slide">
   <div class="slide__inner">
-    <div class="section-tag reveal"><span class="tag-num">03</span><span class="tag-name">VO → CO Overcorrection</span></div>
-    <h2 class="reveal">We pulled $194K from the higher-ROAS structure.</h2>
+    <div class="section-tag reveal"><span class="tag-num">02</span><span class="tag-name">Free Shipping Threshold · Mar 3 · ~5 ROAS points</span></div>
+    <h2 class="reveal">New customer AOV dropped 15.7%.</h2>
+    <p class="subhead reveal">After lowering the FST, new customer AOV fell from $110 to $93. Meta's CO optimization compounded the decrease — CO finds the lower-AOV buyers most affected by the new threshold.</p>
 
-    <div class="chart-grid three reveal">
-      <div class="chart-box">
-        <h3>Spend mix · Before</h3>
-        <div class="chart-sub">CO 74.5% · VO 25.5%</div>
-        <div class="chart-canvas short"><canvas id="mixBefore"></canvas></div>
+    <div class="chart-grid split reveal">
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div class="big-arrow-card bad">
+          <div class="arrow-label">New Customer AOV</div>
+          <div class="arrow-main">
+            <span class="arrow-icon">▼</span>
+            <span class="arrow-number">15.7%</span>
+          </div>
+          <div class="arrow-detail">$110.02 → $92.80 · period prior vs. Mar 3+</div>
+        </div>
+        <div class="big-arrow-card bad">
+          <div class="arrow-label">New Customer Revenue</div>
+          <div class="arrow-main">
+            <span class="arrow-icon">▼</span>
+            <span class="arrow-number">21%</span>
+          </div>
+          <div class="arrow-detail">Decline almost entirely driven by AOV, not order count (orders only −7%)</div>
+        </div>
       </div>
       <div class="chart-box">
-        <h3>Spend mix · After</h3>
-        <div class="chart-sub">CO 80.5% · VO 19.5%</div>
-        <div class="chart-canvas short"><canvas id="mixAfter"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h3>ROAS · VO vs CO</h3>
-        <div class="chart-sub">VO still posts 2× CO's ROAS</div>
-        <div class="chart-canvas short"><canvas id="voCoRoas"></canvas></div>
-      </div>
-    </div>
-
-    <div class="stat-strip two reveal" style="margin-top: 1.25rem;">
-      <div class="stat-block">
-        <div class="stat-label">Spend change</div>
-        <div class="stat-value bad">+$316K to CO · −$194K from VO</div>
-        <div class="stat-compare">6 share points moved CO · classified by actual Performance goal</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-label">VO continues to lead</div>
-        <div class="stat-value good">1.53 vs. 0.71</div>
-        <div class="stat-compare">After-period ROAS · VO vs CO</div>
+        <h3>AOV — new customer vs. repeat</h3>
+        <div class="chart-sub">Repeat AOV barely moved (−5.6%). The hit is concentrated in NC.</div>
+        <div class="chart-canvas tall"><canvas id="aovChart"></canvas></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 07 DRIVER 4 — IA -->
+<!-- 07 DRIVER 3 — VO → CO -->
 <section class="slide">
   <div class="slide__inner">
-    <div class="section-tag reveal"><span class="tag-num">04</span><span class="tag-name">Incremental Attribution · Late March</span></div>
-    <h2 class="reveal">We can't optimize for the windows we used to.</h2>
-    <p class="lead reveal" style="max-width: 70ch;">Incremental Attribution forces Meta's proprietary window. We lost the ability to tell the algorithm which attribution model to train against.</p>
+    <div class="section-tag reveal"><span class="tag-num">03</span><span class="tag-name">VO → CO Overcorrection · Ongoing · ~5 ROAS points</span></div>
+    <h2 class="reveal">We pulled spend out of the higher-ROAS structure.</h2>
+    <p class="subhead reveal">Across all campaigns set to Value vs Conversions performance goals: VO share dropped 6 points, CO grew 6. The problem isn't the direction — it's that VO continues to dramatically outperform CO on ROAS.</p>
+
+    <div class="big-arrow-grid reveal">
+      <div class="big-arrow-card bad">
+        <div class="arrow-label">VO share of spend</div>
+        <div class="arrow-main">
+          <span class="arrow-icon">▼</span>
+          <span class="arrow-number">−23.5%</span>
+        </div>
+        <div class="arrow-context">25.5% of spend → 19.5% of spend</div>
+        <div class="arrow-detail">−$194K from VO · +$316K to CO</div>
+      </div>
+      <div class="big-arrow-card good">
+        <div class="arrow-label">VO still posts vs. CO</div>
+        <div class="arrow-main">
+          <span class="arrow-icon">▲</span>
+          <span class="arrow-number">2.2×</span>
+        </div>
+        <div class="arrow-context">VO blended ROAS of 1.53 vs. CO blended ROAS of 0.71</div>
+        <div class="arrow-detail">After-period · classified by actual Performance goal</div>
+      </div>
+    </div>
+
+    <div class="chart-box reveal" style="margin-top: 0.5rem;">
+      <h3>Blended ROAS · VO vs. CO · before and after</h3>
+      <div class="chart-sub">Both buckets declined — but VO's lead widened in absolute terms</div>
+      <div class="chart-canvas short"><canvas id="voCoRoas"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 DRIVER 4 — IA -->
+<section class="slide">
+  <div class="slide__inner">
+    <div class="section-tag reveal"><span class="tag-num">04</span><span class="tag-name">Incremental Attribution · Late March · ~4 ROAS points</span></div>
+    <h2 class="reveal">We lost the ability to choose our attribution window.</h2>
+    <p class="subhead reveal">Incremental Attribution forces Meta's proprietary "incremental conversions" model. We can't tell the algorithm to optimize against 1-day click, 7-day click, or any combined window like we used to.</p>
 
     <div class="ia-compare reveal">
       <div class="ia-card">
-        <div class="ia-label">Before · Available windows</div>
-        <div class="ia-title">5 windows to optimize for.</div>
+        <div class="ia-label">Before · windows we could optimize for</div>
+        <div class="ia-title">5 windows available.</div>
         <ul class="ia-list">
           <li><span class="ia-mark yes">✓</span>1-day click</li>
           <li><span class="ia-mark yes">✓</span>7-day click</li>
@@ -360,7 +479,7 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
         </ul>
       </div>
       <div class="ia-card now">
-        <div class="ia-label">Now · With Incremental Attribution</div>
+        <div class="ia-label">Now · with Incremental Attribution</div>
         <div class="ia-title">1 black-box window.</div>
         <ul class="ia-list">
           <li class="struck"><span class="ia-mark no">✗</span>1-day click</li>
@@ -373,76 +492,52 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
       </div>
     </div>
 
-    <div class="footnote-bar bad reveal" style="margin-top: 1.25rem;">Estimated impact · 3–5 ROAS points lost · less signal + narrower training data</div>
-  </div>
-</section>
-
-<!-- 08 RULED OUT -->
-<section class="slide">
-  <div class="slide__inner">
-    <div class="section-tag reveal"><span class="tag-num">Diagnostic</span><span class="tag-name">What we ruled out</span></div>
-    <h2 class="reveal">This isn't a tracking issue.</h2>
-
-    <div class="checkmarks reveal">
-      <div class="checkmark-card">
-        <div class="check">✓</div>
-        <h3>Pixel audit</h3>
-        <div class="status">Clean</div>
-      </div>
-      <div class="checkmark-card">
-        <div class="check">✓</div>
-        <h3>Conversion API</h3>
-        <div class="status">Firing correctly</div>
-      </div>
-      <div class="checkmark-card">
-        <div class="check">✓</div>
-        <h3>Product catalog</h3>
-        <div class="status">Intact</div>
-      </div>
-    </div>
-
-    <div class="chart-box reveal" style="margin-top: 0.5rem;">
-      <h3>Where the −26 ROAS points actually came from</h3>
-      <div class="chart-sub">Best-estimate decomposition · directional</div>
-      <div class="chart-canvas"><canvas id="decompChart"></canvas></div>
-    </div>
+    <div class="footnote-bar bad reveal" style="margin-top: 1rem;">Less optimization signal · narrower training data · ~3–5 ROAS points estimated impact</div>
   </div>
 </section>
 
 <!-- 09 NEXT STEPS -->
 <section class="slide">
   <div class="slide__inner">
-    <div class="section-tag reveal"><span class="tag-num">Action</span><span class="tag-name">What we're doing about it</span></div>
-    <h2 class="reveal">Four actions.</h2>
+    <div class="section-tag reveal"><span class="tag-num">Action</span><span class="tag-name">What we're proposing · open to your input</span></div>
+    <h2 class="reveal">Four actions. The first two are immediate.</h2>
 
     <div class="steps reveal">
-      <div class="step priority">
+      <div class="step-row">
         <div class="step-num">01</div>
         <div>
-          <h3>Exclude Audience Network — account-wide.</h3>
-          <p>Reclaim ~$40K spend. Removes 46M garbage impressions from training data. Cleanest single fix in the report.</p>
+          <h3>Exclude Audience Network as a placement, account-wide.</h3>
+          <p>Reclaim ~$40K in spend and remove 46.8M low-converting impressions from Meta's training data. The reallocation should immediately tighten CVR on remaining placements.</p>
+          <div class="step-why">Why now · No tradeoff. We're not bidding for this inventory and it's polluting the algorithm's signal.</div>
         </div>
+        <span class="step-tag quick">Quick win · do this week</span>
       </div>
-      <div class="step priority">
+      <div class="step-row">
         <div class="step-num">02</div>
         <div>
-          <h3>Switch top ASC campaigns to 7d-click + 1d-view.</h3>
-          <p>Restores algorithm signal lost to the attribution change. Start with IA Partnership, IA CostCap, Partnership Winners.</p>
+          <h3>Switch top ASC campaigns to 7-day click + 1-day view.</h3>
+          <p>Apply first to IA Partnership ($928K), IA CostCap ($374K), IA ($358K), and Partnership Winners ($308K) — combined ~$2.0M of after-period spend.</p>
+          <div class="step-why">Why this window · This is what Meta still allows post-attribution change AND the closest match to our pre-March setup. Wider window = more events to train on = the signal recovery we need.</div>
         </div>
+        <span class="step-tag quick">Quick win · do this week</span>
       </div>
-      <div class="step">
+      <div class="step-row">
         <div class="step-num">03</div>
         <div>
-          <h3>Rebalance VO/CO mix.</h3>
-          <p>Pull spend back into VO incrementally. Target ~25% VO share (where it was pre-shift).</p>
+          <h3>Rebalance VO/CO mix — pull back to ~25% VO share.</h3>
+          <p>Initial recommendation: pull from <strong>ASC|CO|IA</strong> (+$315K vs prior) and <strong>ASC|CO|IA|Partnership</strong> (+$307K vs prior), restore budget to <strong>ASC|VO|AEB</strong> (−$156K vs prior) and <strong>ASC|VO|CreativeTesting</strong> (−$145K vs prior). Open to your input on the specific moves.</p>
+          <div class="step-why">Why these · They're the largest single VO budget cuts and the largest CO additions — flipping them gets us back to pre-shift composition with minimal disruption.</div>
         </div>
+        <span class="step-tag">Strategic · needs alignment</span>
       </div>
-      <div class="step">
+      <div class="step-row">
         <div class="step-num">04</div>
         <div>
-          <h3>Report blended + IA ROAS alongside click.</h3>
-          <p>Click ROAS in isolation overstates the decline by 10–15 points. Update weekly pacing template.</p>
+          <h3>Report blended + IA-attributed ROAS alongside click in pacing.</h3>
+          <p>Click ROAS in isolation now overstates the decline by 10–15 points. Update the weekly template so decisions get made against the right number.</p>
+          <div class="step-why">Why · Reporting fix only — no campaign changes required.</div>
         </div>
+        <span class="step-tag">Strategic · needs alignment</span>
       </div>
     </div>
   </div>
@@ -453,7 +548,7 @@ p { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.55; max-wi
   <div class="slide__inner">
     <p class="reveal" style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.6;">Bottom line</p>
     <p class="closing-statement reveal">The drop is real. But it's mostly <em>measurement and mix</em> — not demand.</p>
-    <p class="lead reveal" style="margin-top: 2.5rem; opacity: 0.85;">Of the 26 reported ROAS points lost, ~16–20 are measurement reshuffle and structural overcorrection we can recover. Real residual decline is ~6–10 points — solvable with the four actions.</p>
+    <p class="lead reveal" style="margin-top: 2.5rem; opacity: 0.85;">Of the 26 reported ROAS points lost, ~16–20 are measurement reshuffle and structural overcorrection we can recover. Real residual decline is closer to ~6–10 points — solvable with the four actions.</p>
     <p class="reveal" style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2.5rem; opacity: 0.5;">Questions — Sam</p>
   </div>
 </section>
@@ -512,85 +607,97 @@ const TAN = '#b8a888';
 const TAN_LIGHT = '#d8cdb5';
 const DARK_GRAY = '#3a3a3a';
 
-// SLIDE 3 — AOV
-new Chart(document.getElementById('aovChart'), {
+// SLIDE 2 — Weekly CPM trend
+new Chart(document.getElementById('cpmTrend'), {
+  type: 'line',
+  data: {
+    labels: ['Feb 28','Mar 7','Mar 14','Mar 21','Mar 28','Apr 4','Apr 11','Apr 18','Apr 25','May 2','May 9','May 16'],
+    datasets: [{
+      label: 'Weekly CPM',
+      data: [26.34, 27.15, 28.29, 27.15, 23.16, 21.43, 23.30, 25.05, 24.49, 18.81, 10.74, 12.30],
+      borderColor: BLACK,
+      backgroundColor: 'rgba(0,0,0,0.04)',
+      tension: 0.3,
+      borderWidth: 2.5,
+      pointRadius: 3,
+      pointBackgroundColor: BLACK,
+      fill: true,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      annotation: { annotations: {} }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10, weight: '500' } } },
+      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + v, font: { size: 10 } } }
+    }
+  }
+});
+
+// SLIDE 3 — Decomp horizontal bar
+new Chart(document.getElementById('decompChart'), {
   type: 'bar',
   data: {
-    labels: ['First-Time Customer', 'Returning Customer'],
+    labels: ['Click attribution change', 'Free shipping / AOV', 'VO → CO overcorrection', 'Incremental Attribution', 'True residual decline'],
     datasets: [
-      { label: 'Before', data: [110.02, 95.97], backgroundColor: BLACK, borderWidth: 0, barThickness: 50 },
-      { label: 'After', data: [92.80, 90.56], backgroundColor: BAD, borderWidth: 0, barThickness: 50 }
+      { label: 'ROAS points lost', data: [9, 5, 5, 4, 3], backgroundColor: [BAD, BAD, BAD, BAD, BLACK], borderWidth: 0 }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '~' + c.parsed.x + ' ROAS pts of 26 total' } } },
+    scales: {
+      x: { grid: { color: '#e8e0cc' }, ticks: { callback: v => v + ' pts', font: { size: 10 } }, beginAtZero: true, max: 12 },
+      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+    }
+  }
+});
+
+// SLIDE 4 — ROAS by attribution window
+new Chart(document.getElementById('roasWindow'), {
+  type: 'bar',
+  data: {
+    labels: ['1-Day Click', '1-Day View', 'Engaged-View'],
+    datasets: [
+      { label: 'Before', data: [1.038, 0.391, 0.106], backgroundColor: BLACK, borderWidth: 0 },
+      { label: 'After', data: [0.680, 0.478, 0.202], backgroundColor: [BAD, GOOD, GOOD], borderWidth: 0 }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
       legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } },
-      tooltip: { callbacks: { label: c => c.dataset.label + ': $' + c.parsed.y.toFixed(2) } }
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) + ' ROAS' } }
     },
     scales: {
       x: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
-      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + v, font: { size: 10 } }, beginAtZero: false, suggestedMin: 80 }
+      y: { grid: { color: '#e8e0cc' }, ticks: { font: { size: 10 } }, beginAtZero: true }
     }
   }
 });
 
-// SLIDE 3 — Orders vs Rev change
-new Chart(document.getElementById('ordersRev'), {
+// SLIDE 4 — Click events
+new Chart(document.getElementById('clickEvents'), {
   type: 'bar',
   data: {
-    labels: ['First-Time Orders', 'First-Time Revenue', 'Returning Orders', 'Returning Revenue'],
-    datasets: [
-      { label: '% change', data: [-7, -21, 17, 11], backgroundColor: c => c.parsed && c.parsed.y < 0 ? BAD : GOOD, borderWidth: 0,
-        backgroundColor: [BAD, BAD, GOOD, GOOD] }
-    ]
+    labels: ['Before · Click events', 'After · Click events'],
+    datasets: [{
+      data: [37887, 28979],
+      backgroundColor: [BLACK, BAD],
+      borderWidth: 0,
+      barThickness: 70
+    }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y + '%' } } },
-    scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 9.5, weight: '500' }, maxRotation: 0, autoSkip: false } },
-      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => v + '%', font: { size: 10 } } }
-    }
-  }
-});
-
-// SLIDE 4 — Attribution Purchases
-new Chart(document.getElementById('attribPurch'), {
-  type: 'bar',
-  data: {
-    labels: ['1-Day Click', '1-Day View', 'Engaged-View'],
-    datasets: [
-      { label: 'Before', data: [37887, 13387, 3584], backgroundColor: BLACK, borderWidth: 0 },
-      { label: 'After', data: [28979, 18115, 7559], backgroundColor: [BAD, GOOD, GOOD], borderWidth: 0 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } } },
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y.toLocaleString() + ' click-attributed purchases' } } },
     scales: {
       x: { grid: { display: false }, ticks: { font: { size: 10.5, weight: '500' } } },
-      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => (v/1000)+'K', font: { size: 10 } } }
-    }
-  }
-});
-
-// SLIDE 4 — Attribution Revenue
-new Chart(document.getElementById('attribRev'), {
-  type: 'bar',
-  data: {
-    labels: ['1-Day Click', '1-Day View', 'Engaged-View'],
-    datasets: [
-      { label: 'Before', data: [3765566, 1417826, 384189], backgroundColor: BLACK, borderWidth: 0 },
-      { label: 'After', data: [2646222, 1858492, 786179], backgroundColor: [BAD, GOOD, GOOD], borderWidth: 0 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } } },
-    scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 10.5, weight: '500' } } },
-      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M', font: { size: 10 } } }
+      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => (v/1000) + 'K', font: { size: 10 } }, beginAtZero: true }
     }
   }
 });
@@ -610,12 +717,12 @@ new Chart(document.getElementById('spendStack'), {
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 10, weight: '500' } } },
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 7, font: { size: 9.5, weight: '500' } } },
       tooltip: { callbacks: { label: c => c.dataset.label + ': $' + (c.parsed.y/1000).toFixed(0) + 'K' } }
     },
     scales: {
       x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
-      y: { stacked: true, grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M', font: { size: 10 } } }
+      y: { stacked: true, grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + (v/1000000).toFixed(1) + 'M', font: { size: 9.5 } } }
     }
   }
 });
@@ -635,81 +742,58 @@ new Chart(document.getElementById('impStack'), {
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 10, weight: '500' } } },
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 7, font: { size: 9.5, weight: '500' } } },
       tooltip: { callbacks: { label: c => c.dataset.label + ': ' + (c.parsed.y/1000000).toFixed(1) + 'M' } }
     },
     scales: {
       x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
-      y: { stacked: true, grid: { color: '#e8e0cc' }, ticks: { callback: v => (v/1000000).toFixed(0) + 'M', font: { size: 10 } } }
+      y: { stacked: true, grid: { color: '#e8e0cc' }, ticks: { callback: v => (v/1000000).toFixed(0) + 'M', font: { size: 9.5 } } }
     }
   }
 });
 
-// SLIDE 6 — Mix donuts
-const donutOpts = {
-  responsive: true, maintainAspectRatio: false, cutout: '58%',
-  plugins: {
-    legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 10, weight: '500' } } },
-    tooltip: { callbacks: { label: c => c.label + ' · $' + (c.raw/1000).toFixed(0) + 'K' } }
-  }
-};
-
-new Chart(document.getElementById('mixBefore'), {
-  type: 'doughnut',
-  data: {
-    labels: ['CO  74.5%', 'VO  25.5%'],
-    datasets: [{ data: [2704560, 923913], backgroundColor: [BAD, GOOD], borderWidth: 2, borderColor: '#fff' }]
-  },
-  options: donutOpts
-});
-
-new Chart(document.getElementById('mixAfter'), {
-  type: 'doughnut',
-  data: {
-    labels: ['CO  80.5%', 'VO  19.5%'],
-    datasets: [{ data: [3020739, 729626], backgroundColor: [BAD, GOOD], borderWidth: 2, borderColor: '#fff' }]
-  },
-  options: donutOpts
-});
-
-new Chart(document.getElementById('voCoRoas'), {
+// SLIDE 6 — AOV chart (FT vs Returning)
+new Chart(document.getElementById('aovChart'), {
   type: 'bar',
   data: {
-    labels: ['VO', 'CO'],
+    labels: ['First-Time Customer', 'Returning Customer'],
     datasets: [
-      { label: 'Before', data: [1.847, 0.894], backgroundColor: BLACK, borderWidth: 0 },
-      { label: 'After', data: [1.529, 0.707], backgroundColor: [GOOD, BAD], borderWidth: 0 }
+      { label: 'Before', data: [110.02, 95.97], backgroundColor: BLACK, borderWidth: 0, barThickness: 60 },
+      { label: 'After', data: [92.80, 90.56], backgroundColor: BAD, borderWidth: 0, barThickness: 60 }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 10, weight: '500' } } },
-      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) } }
+      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': $' + c.parsed.y.toFixed(2) } }
     },
     scales: {
       x: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
-      y: { grid: { color: '#e8e0cc' }, ticks: { font: { size: 10 } }, beginAtZero: true }
+      y: { grid: { color: '#e8e0cc' }, ticks: { callback: v => '$' + v, font: { size: 10 } }, beginAtZero: false, suggestedMin: 80 }
     }
   }
 });
 
-// SLIDE 8 — Decomposition
-new Chart(document.getElementById('decompChart'), {
+// SLIDE 7 — VO vs CO ROAS
+new Chart(document.getElementById('voCoRoas'), {
   type: 'bar',
   data: {
-    labels: ['Free shipping / AOV', 'Click attribution', 'VO→CO mix shift', 'Incremental Attribution', 'True residual decline'],
+    labels: ['VO', 'CO'],
     datasets: [
-      { label: 'ROAS points', data: [5, 9, 5, 4, 3], backgroundColor: [BAD, BAD, BAD, BAD, BLACK], borderWidth: 0 }
+      { label: 'Before', data: [1.847, 0.894], backgroundColor: BLACK, borderWidth: 0, barThickness: 60 },
+      { label: 'After', data: [1.529, 0.707], backgroundColor: [GOOD, BAD], borderWidth: 0, barThickness: 60 }
     ]
   },
   options: {
-    indexAxis: 'y',
     responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '~' + c.parsed.x + ' ROAS pts of 26 total' } } },
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 8, font: { size: 11, weight: '500' } } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) + ' ROAS' } }
+    },
     scales: {
-      x: { grid: { color: '#e8e0cc' }, ticks: { callback: v => v + ' pts', font: { size: 10 } }, beginAtZero: true, max: 12 },
-      y: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } }
+      x: { grid: { display: false }, ticks: { font: { size: 12, weight: '600' } } },
+      y: { grid: { color: '#e8e0cc' }, ticks: { font: { size: 10 } }, beginAtZero: true }
     }
   }
 });
