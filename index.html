@@ -773,25 +773,49 @@ new Chart(document.getElementById('aovChart'), {
   }
 });
 
-// SLIDE 7 — VO vs CO combo (spend bars + ROAS line)
+// SLIDE 7 — VO vs CO combo (grouped bars + ROAS lines)
 new Chart(document.getElementById('voCoCombo'), {
   data: {
-    labels: ['VO Before', 'VO After', 'CO Before', 'CO After'],
+    labels: ['VO', 'CO'],
     datasets: [
       {
         type: 'bar',
-        label: 'Spend',
-        data: [923913, 729626, 2704560, 3020739],
-        backgroundColor: [GOOD, GOOD, BAD, BAD],
+        label: 'Spend · Before',
+        data: [923913, 2704560],
+        backgroundColor: BLACK,
         borderWidth: 0,
         yAxisID: 'y',
-        barThickness: 50,
-        order: 2
+        order: 3
+      },
+      {
+        type: 'bar',
+        label: 'Spend · After',
+        data: [729626, 3020739],
+        backgroundColor: [GOOD, BAD],
+        borderWidth: 0,
+        yAxisID: 'y',
+        order: 3
       },
       {
         type: 'line',
-        label: 'Blended ROAS',
-        data: [1.847, 1.529, 0.894, 0.707],
+        label: 'ROAS · Before',
+        data: [1.847, 0.894],
+        borderColor: '#888',
+        backgroundColor: '#888',
+        pointBackgroundColor: '#888',
+        pointBorderColor: '#888',
+        pointRadius: 5,
+        pointHoverRadius: 6,
+        borderWidth: 2,
+        borderDash: [4, 4],
+        tension: 0,
+        yAxisID: 'y1',
+        order: 1
+      },
+      {
+        type: 'line',
+        label: 'ROAS · After',
+        data: [1.529, 0.707],
         borderColor: BLACK,
         backgroundColor: BLACK,
         pointBackgroundColor: BLACK,
@@ -808,17 +832,17 @@ new Chart(document.getElementById('voCoCombo'), {
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 11, weight: '500' } } },
+      legend: { position: 'bottom', labels: { boxWidth: 11, padding: 10, font: { size: 10.5, weight: '500' } } },
       tooltip: {
         callbacks: {
-          label: c => c.dataset.label === 'Spend'
-            ? 'Spend: $' + (c.parsed.y/1000).toFixed(0) + 'K'
-            : 'ROAS: ' + c.parsed.y.toFixed(2)
+          label: c => c.dataset.label.startsWith('Spend')
+            ? c.dataset.label + ': $' + (c.parsed.y/1000).toFixed(0) + 'K'
+            : c.dataset.label + ': ' + c.parsed.y.toFixed(2)
         }
       }
     },
     scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 11, weight: '500' } } },
+      x: { grid: { display: false }, ticks: { font: { size: 12, weight: '600' } } },
       y: {
         type: 'linear', position: 'left',
         grid: { color: '#e8e0cc' },
